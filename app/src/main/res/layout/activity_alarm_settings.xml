@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlarmSettingsActivity">
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00_00"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16000003">
+
+        <CheckBox
+            android:id="@+id/SunBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/sun" />
+
+        <CheckBox
+            android:id="@+id/MonBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/mon" />
+
+        <CheckBox
+            android:id="@+id/TueBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/tue" />
+
+        <CheckBox
+            android:id="@+id/WedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/wed" />
+
+        <CheckBox
+            android:id="@+id/ThuBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/thu" />
+
+        <CheckBox
+            android:id="@+id/FriBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/fri" />
+
+        <CheckBox
+            android:id="@+id/SatBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:button="@null"
+            android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+            android:gravity="center"
+            android:text="@string/sat" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/everydayBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:button="@null"
+        android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+        android:gravity="center"
+        android:text="@string/everyday"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <CheckBox
+        android:id="@+id/repeatBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:button="@null"
+        android:drawableTop="?android:attr/listChoiceIndicatorMultiple"
+        android:gravity="center"
+        android:text="@string/repeat_weekly"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.763"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.257" />
+
+    <LinearLayout
+        android:id="@+id/blockLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42000002"
+        tools:context=".AlarmSettingsActivity">
+
+        <TextView
+            android:id="@+id/blockText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_block"
+            android:tooltipText="Prevents Creating Any Alarm And Editing, Disabling Or Deleting The Current Alarm For The Blocking Interval Both Before And After The Alarm Rings"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="546dp" />
+
+        <Switch
+            android:id="@+id/blockSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="293dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/blockLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.47000003"
+        tools:context=".AlarmSettingsActivity">
+
+        <TextView
+            android:id="@+id/blockText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/block_interval"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="509dp" />
+
+        <Spinner
+            android:id="@+id/blockSpinner"
+            android:layout_width="118dp"
+            android:layout_height="26dp"
+            tools:layout_editor_absoluteX="152dp"
+            tools:layout_editor_absoluteY="510dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/snoozeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.61"
+        tools:context=".AlarmSettingsActivity">
+
+        <TextView
+            android:id="@+id/snoozeText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_snooze"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="546dp" />
+
+        <Switch
+            android:id="@+id/snoozeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="152dp"
+            tools:layout_editor_absoluteY="546dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/snoozeLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.71000004"
+        tools:context=".AlarmSettingsActivity">
+
+        <TextView
+            android:id="@+id/snoozeText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/snooze_interval"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="509dp" />
+
+        <Spinner
+            android:id="@+id/snoozeSpinner1"
+            android:layout_width="115dp"
+            android:layout_height="26dp"
+            tools:layout_editor_absoluteX="152dp"
+            tools:layout_editor_absoluteY="510dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/snoozeLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65999997"
+        tools:context=".AlarmSettingsActivity">
+
+        <TextView
+            android:id="@+id/snoozeText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/snooze_limit"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="509dp" />
+
+        <Spinner
+            android:id="@+id/snoozeSpinner2"
+            android:layout_width="162dp"
+            android:layout_height="26dp"
+            tools:layout_editor_absoluteX="152dp"
+            tools:layout_editor_absoluteY="510dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/toneButton"
+        android:layout_width="152dp"
+        android:layout_height="50dp"
+        android:text="@string/alarm_tone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.829" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="152dp"
+        android:layout_height="50dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.916" />
+</androidx.constraintlayout.widget.ConstraintLayout>

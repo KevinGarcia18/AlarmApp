@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Kevin\'s Alarm App</string>
+    <string name="submit">Submit</string>
+    <string name="favorite_snack">Favorite Snack</string>
+    <string name="favorite_color">Favorite Color</string>
+    <string name="first_name">First Name</string>
+    <string name="textview">TextView</string>
+    <string name="set_alarm">Set Alarm</string>
+    <string name="stop_alarm_sound">Stop Alarm Sound</string>
+    <string name="title_activity_alarm_response">AlarmResponseActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="stop_alarm">Stop Alarm</string>
+    <string name="cancel_alarm">Cancel Alarm</string>
+    <string name="title_activity_alarm_settings">AlarmSettings</string>
+    <string name="save">Save</string>
+    <string name="sun">Sun</string>
+    <string name="sat">Sat</string>
+    <string name="fri">Fri</string>
+    <string name="thu">Thu</string>
+    <string name="wed">Wed</string>
+    <string name="tue">Tue</string>
+    <string name="mon">Mon</string>
+    <string name="_00_00">00:00</string>
+    <string name="repeat_weekly">Repeat Weekly</string>
+    <string name="snooze">Snooze</string>
+    <string name="disable_alarm_creation_destruction_20_minutes_before_after_alarm_rings">Disable Alarm Creation/Destruction 20 Minutes Before/After Alarm Rings</string>
+    <string name="block_alarm_changes_20_min_before_amp_after_alarm"><![CDATA[Block Alarm Changes 20 Min Before & After Alarm]]></string>
+    <string name="block_changes">Block Changes</string>
+    <string name="set_ringtone">Set Ringtone</string>
+    <string name="enable_snooze">Enable Snooze</string>
+    <string name="snooze_interval">Snooze Interval</string>
+    <string name="select_tone">Select Tone</string>
+    <string name="snooze_limit">Snooze Limit</string>
+    <string name="block_limit">Block Limit</string>
+    <string name="enable_block">Enable Block</string>
+    <string name="block_interval">Block Interval</string>
+    <string name="everyday">Everyday</string>
+    <string name="alarm_tone">Alarm Tone</string>
+    <string name="i_understand">I Understand</string>
+    <string name="permission_blurb">With your permission, this app can change the alarm tone for each individual alarm that you set. After you click on the button below, you will be taken to a screen that allows you to grant this app the necessary permission to change the alarm tone on a per alarm basis. If you don\'t grant this app this permission, you will not be able to change the alarm tone from within the app, but the remaining features of the app will work as intended. After you make your choice, you can reach the main app screen by pressing the back arrow on the navigation bar.</string>
+    <string name="with_your_permission">With your permission, the alarms in this app will not be hampered by Android\'s battery optimizations. After you click on the button below, you will be asked to grant this app the necessary permission to exclude it from Android\'s battery optimizations. This app will not continuously run in the background or constantly use resources. Instead, when the alarms rings, Android will wake the phone from sleep much quicker and prioritize the delivery of your alarm. If you don\'t grant this app this permission, the alarms you set may ring 5-10 minutes late if the phone was previously asleep, but the remaining features of the app will work as intended.</string>
+</resources>

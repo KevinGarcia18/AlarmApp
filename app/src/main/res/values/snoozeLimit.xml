@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="snoozeLimit">
+        <item>1 snoozes</item>
+        <item>2 snoozes</item>
+        <item>3 snoozes</item>
+        <item>4 snoozes</item>
+        <item>5 snoozes</item>
+        <item>6 snoozes</item>
+        <item>7 snoozes</item>
+        <item>8 snoozes</item>
+        <item>9 snoozes</item>
+        <item>10 snoozes</item>
+        <item>∞ snoozes</item>
+    </string-array>
+</resources>
