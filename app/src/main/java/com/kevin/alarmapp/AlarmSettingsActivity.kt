@@ -105,7 +105,7 @@ class AlarmSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
             blockIntervalSpinner.adapter = adapter1
         }
         blockIntervalSpinner.setOnItemSelectedListener(this)
-        blockIntervalSpinner.setSelection(19)
+        blockIntervalSpinner.setSelection(29)
 
         val snoozeIntervalSpinner = binding.snoozeSpinner1
         ArrayAdapter.createFromResource(this, R.array.snoozeInterval, android.R.layout.simple_spinner_item).also {
@@ -151,6 +151,7 @@ class AlarmSettingsActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
             alarm.repeats = binding.repeatBox.isChecked
             alarm.blocks = binding.blockSwitch.isChecked
             alarm.snooze = binding.snoozeSwitch.isChecked
+            alarm.maths = binding.mathSwitch.isChecked
             alarm.blockInterval = blockInterval
             alarm.snoozeInterval = snoozeInterval
             alarm.snoozeLimit = snoozeLimit

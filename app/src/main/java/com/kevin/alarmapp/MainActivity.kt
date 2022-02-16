@@ -6,33 +6,29 @@ import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.media.RingtoneManager.TYPE_NOTIFICATION
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.GROUP_ALERT_SUMMARY
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.startActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.kevin.alarmapp.databinding.ActivityMainBinding
 import java.util.*
-import android.provider.Settings
-import android.media.AudioAttributes
-import android.media.RingtoneManager
-import android.media.RingtoneManager.TYPE_NOTIFICATION
-import android.os.*
-import androidx.core.app.NotificationCompat.GROUP_ALERT_SUMMARY
-import android.net.Uri
-import com.google.gson.Gson
-import kotlin.collections.ArrayList
-import com.google.gson.reflect.TypeToken
-import android.os.PowerManager
-import android.app.AlarmManager
-import android.app.AlarmManager.AlarmClockInfo
-
-import android.content.Context.ALARM_SERVICE
-
-import android.os.SystemClock
 
 class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
     private lateinit var binding: ActivityMainBinding
@@ -60,7 +56,7 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         val packageName = getPackageName()
         if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
             // hide 'set alarm' button for now
-            binding.setAlarm.setVisibility(View.GONE)
+            binding.fab.setVisibility(View.GONE)
             binding.permissionTextView.setVisibility(View.VISIBLE)
             binding.permissionButton.setVisibility(View.VISIBLE)
 
@@ -78,12 +74,12 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
 
                 binding.permissionTextView.setVisibility(View.GONE)
                 binding.permissionButton.setVisibility(View.GONE)
-                binding.setAlarm.setVisibility(View.VISIBLE)
+                binding.fab.setVisibility(View.VISIBLE)
             }
         }
         /*if (alarmManager.canScheduleExactAlarms()) {
             // hide 'set alarm' button for now
-            binding.setAlarm.setVisibility(View.GONE)
+            binding.fab.setVisibility(View.GONE)
             binding.permissionTextView.setVisibility(View.VISIBLE)
             binding.permissionButton.setVisibility(View.VISIBLE)
 
@@ -97,7 +93,7 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
 
                 binding.permissionTextView.setVisibility(View.GONE)
                 binding.permissionButton.setVisibility(View.GONE)
-                binding.setAlarm.setVisibility(View.VISIBLE)
+                binding.fab.setVisibility(View.VISIBLE)
             }
         }*/
 
@@ -120,7 +116,7 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         val minute = 0
 
         // display the time picker when the set alarm button is clicked
-        binding.setAlarm.setOnClickListener {
+        binding.fab.setOnClickListener {
             if (!singleton.isThereABlock()) {
                 TimePickerDialog(this, this, hour, minute, false).show()
             } else {
@@ -198,18 +194,13 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                     if (intent.action == "com.kevin.alarmapp.removenotif") {
                         notificationManager.cancel(alarmID.toInt())
                     }
-                    /*else if (alarmID.take(1) == "2") {
-                        Log.d("Alarms", "Nothing To Do: Silent Alarm")
-                        val returnToMain = Intent(context, MainActivity::class.java)
-                        returnToMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(returnToMain)
-                    }*/
                     else {
                         // else start the notification for the alarm
                         val alarmTone = intent.getStringExtra("alarmTone")
-                        val snooze = intent.getBooleanExtra("snooze", true)
+                        val snooze = intent.getBooleanExtra("snooze", false)
+                        val maths = intent.getBooleanExtra("maths", false)
                         val snoozeTally = intent.getIntExtra("snoozeTally", 999)
-                        sendNotification(context, alarmID, alarmTone, snooze, snoozeTally)
+                        sendNotification(context, alarmID, alarmTone, snooze, maths, snoozeTally)
                     }
                 }
             }
@@ -237,13 +228,14 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
             }
         }
 
-        private fun sendNotification(context: Context, alarmID: String, alarmTone: String?, snooze: Boolean, snoozeTally: Int) {
+        private fun sendNotification(context: Context, alarmID: String, alarmTone: String?, snooze: Boolean, maths: Boolean, snoozeTally: Int) {
             val fullScreenIntent = Intent(context, AlarmResponseActivity::class.java)
                 fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 fullScreenIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 fullScreenIntent.putExtra("alarmID", alarmID)
                 fullScreenIntent.putExtra("alarmTone", alarmTone)
                 fullScreenIntent.putExtra("snooze", snooze)
+                fullScreenIntent.putExtra("maths", maths)
                 fullScreenIntent.putExtra("snoozeTally", snoozeTally)
 
             val fullScreenPendingIntent = PendingIntent.getActivity(context, request_code,
@@ -283,7 +275,9 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         var repeats: Boolean = false
         var blocks: Boolean = false
         var snooze: Boolean = false
-        var blockInterval: Int = 20
+        var maths: Boolean = false
+        var disabled: Boolean = false
+        var blockInterval: Int = 30
         var snoozeInterval: Int = 5
         var snoozeTally: Int = 999
         var snoozeLimit: Int = 999
@@ -294,10 +288,8 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
     }
 
     class AlarmViews {
-        lateinit var timeTextView: TextView
-        lateinit var dataTextView: TextView
-        lateinit var activeSwitch: Switch
-        lateinit var cancelButton: Button
+        lateinit var divider: View
+        lateinit var hLayout: LinearLayout
     }
 
     // singleton class for central storage
@@ -414,6 +406,7 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         fun setNextAlarm(alarmID: String) {
             val intent = Intent(context, Receiver::class.java).putExtra("alarmID", alarmID)
             intent.putExtra("alarmTone", alarmMap.getValue(alarmID).alarmTone)
+            intent.putExtra("maths", alarmMap.getValue(alarmID).maths)
             intent.putExtra("snooze", alarmMap.getValue(alarmID).snooze)
             intent.putExtra("snoozeTally", alarmMap.getValue(alarmID).snoozeTally)
             val pendingIntent = PendingIntent.getBroadcast(context, alarmID.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
@@ -427,7 +420,6 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millis, pendingIntent)
                 /*val acInfo = AlarmClockInfo(millis, null)
                 alarmManager.setAlarmClock(acInfo, pendingIntent)*/
-                //wakeUp(alarmID, millis)
                 alarmMap.getValue(alarmID).nextAlarmDay = todaysDay - 1
                 Toast.makeText(context, "Alarm Set For Today", Toast.LENGTH_SHORT).show()
             }
@@ -444,7 +436,6 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                             millis + timeDifference, pendingIntent)
                         /*val acInfo = AlarmClockInfo(millis + timeDifference, null)
                         alarmManager.setAlarmClock(acInfo, pendingIntent)*/
-                        //wakeUp(alarmID, millis + timeDifference)
                         alarmMap.getValue(alarmID).nextAlarmDay = day
                         if (count == 1) Toast.makeText(context, "Alarm Set For Tomorrow", Toast.LENGTH_SHORT).show()
                         else Toast.makeText(context, "Alarm Set For " + count + " Days From Today", Toast.LENGTH_SHORT).show()
@@ -462,49 +453,33 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
         fun createAlarmViews(alarmID: String) {
             val myAlarmViews = AlarmViews()
 
+            // creates the layout for all alarm elements except padding
+            val horizontalLayout = LinearLayout(context)
+            horizontalLayout.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            horizontalLayout.gravity = Gravity.CENTER
+            horizontalLayout.setOrientation(LinearLayout.HORIZONTAL)
+
+            // creates the layout for alarm time, text, switch, except for button
+            val verticalLayout = LinearLayout(context)
+            verticalLayout.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            verticalLayout.setOrientation(LinearLayout.VERTICAL)
+
             // creates the text view for the new alarm
             val timeRef = TextView(context)
             timeRef.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                800,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             timeRef.setText(alarmMap.getValue(alarmID).displayTime)
+            timeRef.setTextSize(24F)
             timeRef.setId(alarmID.toInt())
-            mainLayout.addView(timeRef)
-            myAlarmViews.timeTextView = timeRef
-
-            val dataRef = TextView(context)
-            dataRef.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            val dayList = listOf(" Sun |", " Mon |", " Tue |", " Wed |", " Thu |", " Fri |", " Sat |")
-            var num = 0
-            var dataText = if(alarmMap.getValue(alarmID).blocks) "[ Blocks ][ " +
-                    alarmMap.getValue(alarmID).blockInterval + " Min ]\n" else ""
-            dataText += if(alarmMap.getValue(alarmID).repeats) "[ Repeats ]" else ""
-            if (alarmMap.getValue(alarmID).dayList.count { it } == 7) {
-                dataText += "[ Everyday ]"
-            }
-            else {
-                dataText += "["
-                for (i in alarmMap.getValue(alarmID).dayList) {
-                    if (i) {
-                        dataText += dayList[num]
-                    }
-                    num++
-                }
-                dataText = dataText.dropLast(1)
-                dataText += "]"
-            }
-            val limit = if (alarmMap.getValue(alarmID).snoozeLimit == 999) "∞" else alarmMap.getValue(alarmID).snoozeLimit
-            dataText += if(alarmMap.getValue(alarmID).snooze)
-                "\n[ Snoozes ][ Limit " + limit +
-                " ][ " + alarmMap.getValue(alarmID).snoozeInterval + " Min ]" else ""
-            dataRef.setText(dataText)
-            dataRef.setId(alarmID.toInt())
-            mainLayout.addView(dataRef)
-            myAlarmViews.dataTextView = dataRef
+            verticalLayout.addView(timeRef)
 
             // creates the switch for the new alarm
             val switchRef = Switch(context)
@@ -512,21 +487,85 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            switchRef.setChecked(true)
+            if(alarmMap.getValue(alarmID).disabled == true){
+                switchRef.setChecked(false)
+            }
+            else switchRef.setChecked(true)
             switchRef.setId(alarmID.toInt())
-            mainLayout.addView(switchRef)
-            myAlarmViews.activeSwitch = switchRef
+            verticalLayout.addView(switchRef)
+
+            // creates a textview for all the alarm info
+            val dataRef = TextView(context)
+            dataRef.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            val dayList = listOf(" Sun |", " Mon |", " Tue |", " Wed |", " Thu |", " Fri |", " Sat |")
+            var num = 0
+            var infoText = if(alarmMap.getValue(alarmID).repeats) "[ Repeats ]" else ""
+            if (alarmMap.getValue(alarmID).dayList.count { it } == 7) {
+                infoText += "[ Everyday ]"
+            }
+            else {
+                infoText += "["
+                for (i in alarmMap.getValue(alarmID).dayList) {
+                    if (i) {
+                        infoText += dayList[num]
+                    }
+                    num++
+                }
+                infoText = infoText.dropLast(1)
+                infoText += "]"
+            }
+
+            val limit = if (alarmMap.getValue(alarmID).snoozeLimit == 999) "∞" else alarmMap.getValue(alarmID).snoozeLimit
+            infoText += if(alarmMap.getValue(alarmID).snooze)
+                "\n[ Snoozes ][ Limit " + limit +
+                " ][ " + alarmMap.getValue(alarmID).snoozeInterval + " Min ]" else ""
+
+            infoText += if(alarmMap.getValue(alarmID).blocks) "\n[ Blocks ][ ±" +
+                    alarmMap.getValue(alarmID).blockInterval + " Min ]" else ""
+
+            infoText += if(alarmMap.getValue(alarmID).maths)
+                "\n[ Math Unlock ][ Limit 3 ]" else ""
+            dataRef.setText(infoText)
+            dataRef.setId(alarmID.toInt())
+            verticalLayout.addView(dataRef)
+
+            // creates the layout for the delete button
+            val verticalLayout2 = LinearLayout(context)
+            verticalLayout2.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            )
+            verticalLayout2.gravity = Gravity.CENTER
+            verticalLayout2.setOrientation(LinearLayout.VERTICAL)
 
             // creates the delete button for the new alarm
-            val buttonRef = Button(context)
+            val buttonRef = ImageButton(context)
             buttonRef.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            buttonRef.text = "Delete Alarm"
+            buttonRef.setImageResource(R.drawable.delete)
             buttonRef.setId(alarmID.toInt())
-            mainLayout.addView(buttonRef)
-            myAlarmViews.cancelButton = buttonRef
+            verticalLayout2.addView(buttonRef)
+
+            // adds the two vertical layouts to the one horizontal layout
+            horizontalLayout.addView(verticalLayout)
+            horizontalLayout.addView(verticalLayout2)
+            mainLayout.addView(horizontalLayout)
+            myAlarmViews.hLayout = horizontalLayout
+
+            // divider for each alarm
+            val dividerRef = View(context)
+            dividerRef.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                2
+            )
+            dividerRef.setBackgroundColor(Color.BLACK)
+            mainLayout.addView(dividerRef)
+            myAlarmViews.divider = dividerRef
 
             // the delete button is enabled
             buttonRef.setOnClickListener(object : View.OnClickListener {
@@ -549,10 +588,12 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                     if (!isThereABlock(alarmID)) {
                         if (isChecked) {
                             Toast.makeText(context, "Alarm Enabled", Toast.LENGTH_SHORT).show()
+                            alarmMap.getValue(view.getId().toString()).disabled = false
                             setNextAlarm(view.getId().toString())
                         }
                         else {
                             Toast.makeText(context, "Alarm Disabled", Toast.LENGTH_SHORT).show()
+                            alarmMap.getValue(view.getId().toString()).disabled = true
                             disableAlarm(view.getId().toString())
                         }
                     }
@@ -573,22 +614,14 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                 val pendingIntent = PendingIntent.getBroadcast(context, alarmID.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
                 alarmManager.cancel(pendingIntent)
                 pendingIntent.cancel()
-
-                val silentAlarmID = "2" + alarmID.takeLast(4)
-                val silentIntent = Intent(context, Receiver::class.java).putExtra("alarmID", silentAlarmID)
-                val silentPendingIntent = PendingIntent.getBroadcast(context, silentAlarmID.toInt(), silentIntent, PendingIntent.FLAG_ONE_SHOT)
-                alarmManager.cancel(silentPendingIntent)
-                silentPendingIntent.cancel()
             }
         }
 
         // removes alarm's views
         fun destroyAlarmViews (alarmID: String) {
             if (alarmViews.containsKey(alarmID)) {
-                mainLayout.removeView(alarmViews.getValue(alarmID).timeTextView)
-                mainLayout.removeView(alarmViews.getValue(alarmID).dataTextView)
-                mainLayout.removeView(alarmViews.getValue(alarmID).activeSwitch)
-                mainLayout.removeView(alarmViews.getValue(alarmID).cancelButton)
+                mainLayout.removeView(alarmViews.getValue(alarmID).divider)
+                mainLayout.removeView(alarmViews.getValue(alarmID).hLayout)
                 alarmViews.remove(alarmID)
             }
         }
@@ -624,15 +657,5 @@ class MainActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
                     && System.currentTimeMillis() < (millis + (60000 * alarm.blockInterval))
                     && System.currentTimeMillis() > (millis - (60000 * alarm.blockInterval)))
         }
-
-        /*// creates a silent pendingIntent that wakes up the phone from doze or whatever
-        @RequiresApi(Build.VERSION_CODES.M)
-        fun wakeUp(alarmID: String, millis: Long) {
-            val silentAlarmID: String = "2" + alarmID.takeLast(4)
-            val intent = Intent(context, Receiver::class.java).putExtra("alarmID", silentAlarmID)
-            val pendingIntent = PendingIntent.getBroadcast(context, silentAlarmID.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, millis - 570000, pendingIntent)
-            //Toast.makeText(context, "Silent Alarm Set", Toast.LENGTH_SHORT).show()
-        }*/
     }
 }

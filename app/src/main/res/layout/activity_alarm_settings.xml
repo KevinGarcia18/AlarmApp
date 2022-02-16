@@ -148,7 +148,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42000002"
+        app:layout_constraintVertical_bias="0.36"
         tools:context=".AlarmSettingsActivity">
 
         <TextView
@@ -156,8 +156,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enable_block"
-            android:tooltipText="Prevents Creating Any Alarm And Editing, Disabling Or Deleting The Current Alarm For The Blocking Interval Both Before And After The Alarm Rings"
             android:textSize="20sp"
+            android:tooltipText="Prevents Creating Any Alarm And Editing, Disabling Or Deleting The Current Alarm For The Blocking Interval Both Before And After The Alarm Rings"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="546dp" />
 
@@ -179,7 +179,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47000003"
+        app:layout_constraintVertical_bias="0.41000003"
         tools:context=".AlarmSettingsActivity">
 
         <TextView
@@ -208,7 +208,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61"
+        app:layout_constraintVertical_bias="0.48000002"
         tools:context=".AlarmSettingsActivity">
 
         <TextView
@@ -237,7 +237,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71000004"
+        app:layout_constraintVertical_bias="0.58000004"
         tools:context=".AlarmSettingsActivity">
 
         <TextView
@@ -266,7 +266,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65999997"
+        app:layout_constraintVertical_bias="0.53"
         tools:context=".AlarmSettingsActivity">
 
         <TextView
@@ -286,6 +286,37 @@
             tools:layout_editor_absoluteY="510dp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/mathLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65"
+        tools:context=".AlarmSettingsActivity">
+
+        <TextView
+            android:id="@+id/mathText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_math_puzzle"
+            android:textSize="20sp"
+            android:tooltipText="Prevents Creating Any Alarm And Editing, Disabling Or Deleting The Current Alarm For The Blocking Interval Both Before And After The Alarm Rings"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="546dp" />
+
+        <Switch
+            android:id="@+id/mathSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="293dp" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/toneButton"
         android:layout_width="152dp"
@@ -296,7 +327,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.829" />
+        app:layout_constraintVertical_bias="0.888" />
 
     <Button
         android:id="@+id/saveButton"
@@ -308,5 +339,5 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.916" />
+        app:layout_constraintVertical_bias="0.975" />
 </androidx.constraintlayout.widget.ConstraintLayout>
